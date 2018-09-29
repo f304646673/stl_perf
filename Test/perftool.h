@@ -7,11 +7,6 @@ public:
     PerfTool() : _records(nullptr), _index(0) {};
     ~PerfTool() {};
 public:
-    static PerfTool & get_instance() {
-        static PerfTool perftool;
-        return perftool;
-    }
-
     void init(size_t count) {
         _records = new LARGE_INTEGER[count];
     }

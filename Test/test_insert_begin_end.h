@@ -2,51 +2,72 @@
 #include <vector>
 #include <list>
 #include <deque>
+#include <functional> 
 
 #include "perftool.h"
 
 template<class T>
-void insert_end(size_t count) {
+void insert_end(size_t count, PerfTool& perftool) {
     T container;
     auto it = container.end();
     for (size_t i = 0; i < count; i++) {
         it = container.insert(it, i);
-        PerfTool::get_instance().record();
+        perftool.record();
     }
 }
 
 template<class T>
-void insert_begin(size_t count) {
+void insert_begin(size_t count, PerfTool& perftool) {
     T container;
     auto it = container.begin();
     for (size_t i = 0; i < count; i++) {
         it = container.insert(it, i);
-        PerfTool::get_instance().record();
+        perftool.record();
     }
+}
+
+template<class T>
+void test_insert(T fn, size_t count, const std::string& type_name) {
+    std::string name(__FUNCTION__);
+    name.append("_");
+    name.append(type_name);
+    name.append(".tstl");
+
+    PerfTool perftool;
+    perftool.init(count);
+    fn(count, perftool);
+    perftool.save(name.c_str());
 }
 
 void test_insert_begin() {
     const size_t count = 1024 * 128;
-    PerfTool::get_instance().init(count);
-    //insert_begin<std::vector<size_t>>(count);
-    //PerfTool::get_instance().save("insert_begin_vec.txt");
+    auto fn_begin_vector = std::bind(insert_begin<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_insert<decltype(fn_begin_vector)>(fn_begin_vector, count, "begin_vector");
 
-    //insert_begin<std::list<size_t>>(count);
-    //PerfTool::get_instance().save("insert_begin_list.txt");
+    auto fn_list_vector = std::bind(insert_begin<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_insert<decltype(fn_list_vector)>(fn_list_vector, count, "begin_list");
 
-    insert_begin<std::deque<size_t>>(count);
-    PerfTool::get_instance().save("insert_begin_deque.txt");
+    auto fn_begin_deque = std::bind(insert_begin<std::deque<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_insert<decltype(fn_begin_deque)>(fn_begin_deque, count, "begin_deque");
 }
 
 void test_insert_end() {
     const size_t count = 1024 * 128;
-    PerfTool::get_instance().init(count);
+    auto fn_end_vector = std::bind(insert_end<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_insert<decltype(fn_end_vector)>(fn_end_vector, count, "end_vector");
+
+    auto fn_list_vector = std::bind(insert_end<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_insert<decltype(fn_list_vector)>(fn_list_vector, count, "end_list");
+
+    auto fn_end_deque = std::bind(insert_end<std::deque<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_insert<decltype(fn_end_deque)>(fn_end_deque, count, "end_deque");
+
     //insert_end<std::vector<size_t>>(count);
-    //PerfTool::get_instance().save("insert_end_vec.txt");
+    //perftool.save("insert_end_vec.txt");
 
     //insert_end<std::list<size_t>>(count);
-    //PerfTool::get_instance().save("insert_end_list.txt");
+    //perftool.save("insert_end_list.txt");
 
-    //insert_end<std::deque<size_t>>(count);
-    PerfTool::get_instance().save("insert_end_deque.txt");
+    //insert_end<std::deque<size_t>>(count, perftool);
+    //perftool.save("insert_end_deque.txt");
 }
