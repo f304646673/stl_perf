@@ -3,6 +3,7 @@
 #include <list>
 #include <deque>
 #include <forward_list>
+#include <set>
 #include <functional> 
 
 #include "perftool.h"
@@ -80,7 +81,8 @@ void test_insert(T fn, size_t count, const std::string& type_name) {
 }
 
 void test_insert_begin() {
-    const size_t count = 1024 * 128;
+    const size_t count = 1024 * 16;
+
     auto fn_begin_vector = std::bind(insert_begin<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_insert<decltype(fn_begin_vector)>(fn_begin_vector, count, "begin_vector");
 
@@ -92,10 +94,14 @@ void test_insert_begin() {
 
     auto fn_begin_forward_list = std::bind(insert_forward_list_begin, std::placeholders::_1, std::placeholders::_2);
     test_insert<decltype(fn_begin_forward_list)>(fn_begin_forward_list, count, "begin_forwardlist");
+
+    auto fn_begin_set = std::bind(insert_begin<std::set<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_insert<decltype(fn_begin_set)>(fn_begin_set, count, "begin_set");
 }
 
 void test_insert_end() {
-    const size_t count = 1024 * 128;
+    const size_t count = 1024 * 16;
+
     auto fn_end_vector = std::bind(insert_end<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_insert<decltype(fn_end_vector)>(fn_end_vector, count, "end_vector");
     
@@ -107,10 +113,13 @@ void test_insert_end() {
 
     auto fn_end_forward_list = std::bind(insert_forward_list_end, std::placeholders::_1, std::placeholders::_2);
     test_insert<decltype(fn_end_forward_list)>(fn_end_forward_list, count, "end_forwardlist");
+
+    auto fn_end_set = std::bind(insert_end<std::set<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_insert<decltype(fn_end_set)>(fn_end_set, count, "end_set");
 }
 
 void test_insert_mid() {
-    const size_t count = 1024 * 128;
+    const size_t count = 1024 * 16;
 
     auto fn_mid_vector = std::bind(insert_mid<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_insert<decltype(fn_mid_vector)>(fn_mid_vector, count, "mid_vector");
@@ -123,4 +132,7 @@ void test_insert_mid() {
 
     auto fn_mid_forward_list = std::bind(insert_forward_list_mid, std::placeholders::_1, std::placeholders::_2);
     test_insert<decltype(fn_mid_forward_list)>(fn_mid_forward_list, count, "mid_forwardlist");
+
+    auto fn_mid_set = std::bind(insert_mid<std::set<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_insert<decltype(fn_mid_set)>(fn_mid_set, count, "mid_set");
 }

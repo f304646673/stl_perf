@@ -3,9 +3,46 @@
 #include <list>
 #include <deque>
 #include <forward_list>
+#include <set>
 #include <functional> 
 
 #include "perftool.h"
+
+void erase_set_end(size_t count, PerfTool& perftool) {
+    std::set<size_t> container;
+    for (size_t i = 0; i < count; i++) {
+        container.insert(container.begin(), i);
+    }
+    for (size_t i = 0; i < count; i++) {
+        container.erase(count - i- 1);
+        perftool.record();
+    }
+}
+
+void erase_set_begin(size_t count, PerfTool& perftool) {
+    std::set<size_t> container;
+    for (size_t i = 0; i < count; i++) {
+        container.insert(container.begin(), i);
+    }
+    for (size_t i = 0; i < count; i++) {
+        container.erase(container.begin());
+        perftool.record();
+    }
+}
+
+void erase_set_mid(size_t count, PerfTool& perftool) {
+    std::set<size_t> container;
+    for (size_t i = 0; i < count; i++) {
+        container.insert(container.begin(), i);
+    }
+
+    auto it = container.begin();
+    it++;
+    for (size_t i = 0; i < count - 128; i++) {
+        it = container.erase(it);
+        perftool.record();
+    }
+}
 
 void erase_forward_list_end(size_t count, PerfTool& perftool) {
     std::forward_list<size_t> container;
@@ -35,10 +72,8 @@ void erase_forward_list_mid(size_t count, PerfTool& perftool) {
         container.push_front(i);
     }
 
-    auto it = container.begin();
-    it++;
-    for (size_t i = 0; i < count / 2; i++) {
-        it = container.erase_after(it);
+    for (size_t i = 0; i < count - 128; i++) {
+        container.erase_after(container.begin());
         perftool.record();
     }
 }
@@ -77,7 +112,7 @@ void erase_mid(size_t count, PerfTool& perftool) {
 
     auto it = container.begin();
     it++;
-    for (size_t i = 0; i < count / 2; i++) {
+    for (size_t i = 0; i < count - 128; i++) {
         it = container.erase(it);
         perftool.record();
     }
@@ -97,7 +132,7 @@ void test_erase(T fn, size_t count, const std::string& type_name) {
 }
 
 void test_erase_begin() {
-    const size_t count = 1024 *128;
+    const size_t count = 1024 * 16;
 
     auto fn_begin_vector = std::bind(erase_begin<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_begin_vector)>(fn_begin_vector, count, "begin_vector");
@@ -110,10 +145,13 @@ void test_erase_begin() {
 
     auto fn_begin_forward_list = std::bind(erase_forward_list_begin, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_begin_forward_list)>(fn_begin_forward_list, count, "begin_forwardlist");
+
+    auto fn_begin_set = std::bind(erase_set_begin, std::placeholders::_1, std::placeholders::_2);
+    test_erase<decltype(fn_begin_set)>(fn_begin_set, count, "begin_set");
 }
 
 void test_erase_end() {
-    const size_t count = 1024 * 128;
+    const size_t count = 1024 * 16;
     auto fn_end_vector = std::bind(erase_end<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_end_vector)>(fn_end_vector, count, "end_vector");
     
@@ -125,19 +163,25 @@ void test_erase_end() {
 
     auto fn_end_forward_list = std::bind(erase_forward_list_end, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_end_forward_list)>(fn_end_forward_list, count, "end_forwardlist");
+
+    auto fn_end_set = std::bind(erase_set_end, std::placeholders::_1, std::placeholders::_2);
+    test_erase<decltype(fn_end_set)>(fn_end_set, count, "end_set");
 }
 
 void test_erase_mid() {
-    const size_t count = 1024 * 128;
+    const size_t count = 1024 * 16;
     auto fn_mid_vector = std::bind(erase_mid<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_mid_vector)>(fn_mid_vector, count, "mid_vector");
-
-    auto fn_mid_deque = std::bind(erase_mid<std::deque<size_t>>, std::placeholders::_1, std::placeholders::_2);
-    test_erase<decltype(fn_mid_deque)>(fn_mid_deque, count, "mid_deque");
 
     auto fn_list_vector = std::bind(erase_mid<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_list_vector)>(fn_list_vector, count, "mid_list");
 
+    auto fn_mid_deque = std::bind(erase_mid<std::deque<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_erase<decltype(fn_mid_deque)>(fn_mid_deque, count, "mid_deque");
+
     auto fn_mid_forward_list = std::bind(erase_forward_list_mid, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_mid_forward_list)>(fn_mid_forward_list, count, "mid_forwardlist");
+
+    auto fn_mid_set = std::bind(erase_set_mid, std::placeholders::_1, std::placeholders::_2);
+    test_erase<decltype(fn_mid_set)>(fn_mid_set, count, "mid_set");
 }
