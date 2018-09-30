@@ -48,6 +48,8 @@ def analyze_results(file_list, x = None, y = None):
         plt.plot(list, color = color, label = type)
     
     plt.title(title)
+    plt.xlabel('OperationCounter')
+    plt.ylabel('PerformanceCounter')
     if x != None:
         plt.xlim(0, x)
     if y != None:
@@ -61,51 +63,34 @@ class Analyze(object):
     def show(self, x = None, y = None):
         analyze_results(self.file_list, x, y)
 
+def show_result(floder_path, prefix):
+    analyze = Analyze(floder_path, prefix)
+    analyze.show()
+    analyze.show(128 * 16, 128 * 8)
+    analyze.show(128 * 8, 128 * 4)
+    analyze.show(128, 128)
+
 def show_insert_begin():
-    file_list_begin = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_begin")
-    file_list_begin.show()
-    file_list_begin.show(128 * 16, 128 * 8)
-    file_list_begin.show(128 * 8, 128 * 4)
-    file_list_begin.show(128, 128)
+    show_result("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_begin")
 
 def show_insert_mid():
-    file_list_mid = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_mid")
-    file_list_mid.show()
-    file_list_mid.show(128 * 16, 128 * 8)
-    file_list_mid.show(128 * 8, 128 * 4)
-    file_list_mid.show(128, 128)
+    show_result("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_mid")
 
 def show_insert_end():
-    file_list_end = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_end")
-    file_list_end.show()
-    file_list_end.show(128 * 16, 128 * 8)
-    file_list_end.show(128 * 8, 128 * 4)
-    file_list_end.show(128, 128)
+    show_result("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_end")
 
 def show_erase_begin():
-    file_list_begin = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_erase_begin")
-    file_list_begin.show()
-    file_list_begin.show(128 * 16, 128 * 8)
-    file_list_begin.show(128 * 8, 128 * 4)
-    file_list_begin.show(128, 128)
+    show_result("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_erase_begin")
 
 def show_erase_mid():
-    file_list_mid = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_erase_mid")
-    file_list_mid.show()
-    file_list_mid.show(128 * 16, 128 * 8)
-    file_list_mid.show(128 * 8, 128 * 4)
-    file_list_mid.show(128, 128)
+    show_result("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_erase_mid")
 
 def show_erase_end():
-    file_list_end = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_erase_end")
-    file_list_end.show()
-    file_list_end.show(128 * 16, 128 * 8)
-    file_list_end.show(128 * 8, 128 * 4)
-    file_list_end.show(128, 128)
+    show_result("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_erase_end")
 
-#show_insert_begin
-#show_insert_mid()
-#show_insert_end()
+show_insert_begin()
+show_insert_mid()
+show_insert_end()
 show_erase_begin()
 show_erase_mid()
 show_erase_end()
