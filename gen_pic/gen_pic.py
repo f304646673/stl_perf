@@ -37,7 +37,7 @@ def get_color(type):
     type_color = {'vector': "r", 'deque': "g", 'list': "b"} # {'b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'};
     return type_color.get(type, "k")
 
-def analyze_results(file_list):
+def analyze_results(file_list, x = None, y = None):
     title = ""
     for i in range(0, len(file_list)):
         if len(title) == 0:
@@ -45,17 +45,42 @@ def analyze_results(file_list):
         type = get_type(file_list[i])
         color = get_color(type)
         list = get_list(file_list[i])
-        plt.plot(list, color=color, label=type)
+        plt.plot(list, color = color, label = type)
     
     plt.title(title)
-    #plt.xlim(0, 1024 * 64)
-    #plt.ylim(0, 2500)
+    if x != None:
+        plt.xlim(0, x)
+    if y != None:
+        plt.ylim(0, y )
     plt.legend()
     plt.show()
 
-file_list = get_file_list("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_end")
-analyze_results(file_list)
+class Analyze(object):
+    def __init__(self, floder_path, prefix):
+        self.file_list = get_file_list(floder_path, prefix)
+    def show(self, x = None, y = None):
+        analyze_results(self.file_list, x, y)
 
+def show_insert_begin():
+    file_list_begin = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_begin")
+    file_list_begin.show()
+    file_list_begin.show(1024, 512)
+    file_list_begin.show(128, 128)
 
+def show_insert_mid():
+    file_list_mid = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_mid")
+    file_list_mid.show()
+    file_list_mid.show(1024, 512)
+    file_list_mid.show(128, 128)
+
+def show_insert_end():
+    file_list_end = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_end")
+    file_list_end.show()
+    file_list_end.show(1024, 512)
+    file_list_end.show(128, 128)
+
+#show_insert_begin
+#show_insert_mid()
+show_insert_end()
 
 
