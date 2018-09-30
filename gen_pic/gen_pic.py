@@ -34,7 +34,7 @@ def get_title(file_name):
     return get_substr(file_name, "test_", "_")
 
 def get_color(type):
-    type_color = {'vector': "r", 'deque': "g", 'list': "b"} # {'b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'};
+    type_color = {'vector': "r", 'deque': "g", 'list': "b", 'forward_list': "c"} # {'b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'};
     return type_color.get(type, "k")
 
 def analyze_results(file_list, x = None, y = None):
@@ -64,23 +64,50 @@ class Analyze(object):
 def show_insert_begin():
     file_list_begin = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_begin")
     file_list_begin.show()
-    file_list_begin.show(1024, 512)
+    file_list_begin.show(128 * 16, 128 * 8)
+    file_list_begin.show(128 * 8, 128 * 4)
     file_list_begin.show(128, 128)
 
 def show_insert_mid():
     file_list_mid = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_mid")
     file_list_mid.show()
-    file_list_mid.show(1024, 512)
+    file_list_mid.show(128 * 16, 128 * 8)
+    file_list_mid.show(128 * 8, 128 * 4)
     file_list_mid.show(128, 128)
 
 def show_insert_end():
     file_list_end = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_insert_end")
     file_list_end.show()
-    file_list_end.show(1024, 512)
+    file_list_end.show(128 * 16, 128 * 8)
+    file_list_end.show(128 * 8, 128 * 4)
+    file_list_end.show(128, 128)
+
+def show_erase_begin():
+    file_list_begin = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_erase_begin")
+    file_list_begin.show()
+    file_list_begin.show(128 * 16, 128 * 8)
+    file_list_begin.show(128 * 8, 128 * 4)
+    file_list_begin.show(128, 128)
+
+def show_erase_mid():
+    file_list_mid = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_erase_mid")
+    file_list_mid.show()
+    file_list_mid.show(128 * 16, 128 * 8)
+    file_list_mid.show(128 * 8, 128 * 4)
+    file_list_mid.show(128, 128)
+
+def show_erase_end():
+    file_list_end = Analyze("E:\\Users\\fangliang\\source\\repos\\Test\\stl_perf\\Release\\", "test_erase_end")
+    file_list_end.show()
+    file_list_end.show(128 * 16, 128 * 8)
+    file_list_end.show(128 * 8, 128 * 4)
     file_list_end.show(128, 128)
 
 #show_insert_begin
 #show_insert_mid()
-show_insert_end()
+#show_insert_end()
+show_erase_begin()
+show_erase_mid()
+show_erase_end()
 
 
