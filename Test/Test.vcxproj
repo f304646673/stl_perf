@@ -159,6 +159,7 @@
     <ClInclude Include="perftool.h" />
     <ClInclude Include="test_erase_begin_mid_end.h" />
     <ClInclude Include="test_insert_begin_mid_end.h" />
+    <ClInclude Include="test_traversal_begin_end.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

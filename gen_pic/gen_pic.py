@@ -34,7 +34,8 @@ def get_title(file_name):
     return get_substr(file_name, "test_", "_")
 
 def get_color(type):
-    type_color = {'vector': "r", 'deque': "g", 'list': "b", 'forwardlist': "c", 'set' : "m", 'unorderedset' : "y"} # {'b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'};
+    # {'b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'};
+    type_color = {'vector': "r", 'deque': "g", 'list': "b", 'forwardlist': "c", 'set' : "m", 'unorderedset' : "y"} 
     return type_color.get(type, "k")
 
 def analyze_results(file_list, x = None, withhighest = True):
@@ -114,11 +115,24 @@ def show_erase_mid():
 def show_erase_end():
     show_result(analyze_floder, "test_erase_end")
 
+def show_traversal_begin():
+    show_result(analyze_floder, "test_traversal_begin")
+
+def show_traversal_mid():
+    show_result(analyze_floder, "test_traversal_mid")
+
+def show_traversal_end():
+    show_result(analyze_floder, "test_traversal_end")
+
 show_insert_begin()
 show_insert_mid()
 show_insert_end()
+
 show_erase_begin()
 show_erase_mid()
 show_erase_end()
 
+show_traversal_begin()
+show_traversal_mid()
+show_traversal_end()
 

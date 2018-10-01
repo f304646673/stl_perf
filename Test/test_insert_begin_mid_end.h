@@ -115,8 +115,8 @@ void test_insert_begin() {
     auto fn_begin_vector = std::bind(insert_begin<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_insert<decltype(fn_begin_vector)>(fn_begin_vector, count, "begin_vector");
 
-    auto fn_mid_list = std::bind(insert_begin<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
-    test_insert<decltype(fn_mid_list)>(fn_mid_list, count, "begin_list");
+    auto fn_begin_list = std::bind(insert_begin<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_insert<decltype(fn_begin_list)>(fn_begin_list, count, "begin_list");
 
     auto fn_begin_deque = std::bind(insert_begin<std::deque<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_insert<decltype(fn_begin_deque)>(fn_begin_deque, count, "begin_deque");
@@ -137,8 +137,8 @@ void test_insert_end() {
     auto fn_end_vector = std::bind(insert_end<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_insert<decltype(fn_end_vector)>(fn_end_vector, count, "end_vector");
     
-    auto fn_mid_list = std::bind(insert_end<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
-    test_insert<decltype(fn_mid_list)>(fn_mid_list, count, "end_list");
+    auto fn_end_list = std::bind(insert_end<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_insert<decltype(fn_end_list)>(fn_end_list, count, "end_list");
 
     auto fn_end_deque = std::bind(insert_end<std::deque<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_insert<decltype(fn_end_deque)>(fn_end_deque, count, "end_deque");

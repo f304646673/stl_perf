@@ -27,6 +27,9 @@
     <ClInclude Include="test_insert_begin_mid_end.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="test_traversal_begin_end.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
