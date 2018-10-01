@@ -5,10 +5,36 @@
 #include <forward_list>
 #include <set>
 #include <unordered_set>
+#include <unordered_set>
+#include <unordered_map>
 
 #include <functional> 
 
 #include "perftool.h"
+
+template<class T>
+void traversal_map_end(size_t count, PerfTool& perftool) {
+    T container;
+    for (size_t i = 0; i < count; i++) {
+        container[i] = i;
+    }
+    for (auto it = container.rbegin(); it != container.rend();) {
+        it++;
+        perftool.record();
+    }
+}
+
+template<class T>
+void traversal_map_begin(size_t count, PerfTool& perftool) {
+    T container;
+    for (size_t i = 0; i < count; i++) {
+        container[i] = i;
+    }
+    for (auto it = container.begin(); it != container.end();) {
+        it++;
+        perftool.record();
+    }
+}
 
 void traversal_forward_list_begin(size_t count, PerfTool& perftool) {
     std::forward_list<size_t> container;
@@ -100,6 +126,12 @@ void test_traversal_begin() {
 
     auto fn_begin_unordered_set = std::bind(traversal_begin<std::unordered_set<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_traversal<decltype(fn_begin_unordered_set)>(fn_begin_unordered_set, count, "begin_unorderedset");
+
+    auto fn_begin_map = std::bind(traversal_map_begin<std::map<size_t, size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_traversal<decltype(fn_begin_map)>(fn_begin_map, count, "begin_map");
+
+    auto fn_begin_unordered_map = std::bind(traversal_map_begin<std::unordered_map<size_t, size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_traversal<decltype(fn_begin_unordered_map)>(fn_begin_unordered_map, count, "begin_unorderedmap");
 }
 
 void test_traversal_end() {
@@ -121,4 +153,10 @@ void test_traversal_end() {
 
     //auto fn_end_unordered_set = std::bind(traversal_end<std::unordered_set<size_t>>, std::placeholders::_1, std::placeholders::_2);
     //test_traversal<decltype(fn_end_unordered_set)>(fn_end_unordered_set, count, "end_unorderedset");
+
+    auto fn_end_map = std::bind(traversal_map_end<std::map<size_t, size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_traversal<decltype(fn_end_map)>(fn_end_map, count, "end_map");
+
+    //auto fn_end_unordered_map = std::bind(traversal_map_end<std::unordered_map<size_t, size_t>>, std::placeholders::_1, std::placeholders::_2);
+    //test_traversal<decltype(fn_end_unordered_map)>(fn_end_unordered_map, count, "end_unorderedmap");
 }

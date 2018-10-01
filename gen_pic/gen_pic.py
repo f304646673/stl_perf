@@ -34,9 +34,26 @@ def get_title(file_name):
     return get_substr(file_name, "test_", "_")
 
 def get_color(type):
-    # {'b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'};
-    type_color = {'vector': "r", 'deque': "g", 'list': "b", 'forwardlist': "c", 'set' : "m", 'unorderedset' : "y"} 
-    return type_color.get(type, "k")
+    type_color = {'vector': "red ",
+                 'deque': "green", 
+                 'list': "blue", 
+                 'forwardlist': "cyan", 
+                 'set' : "magenta", 
+                 'unorderedset' : "yellow",
+                 'map' : "chocolate",
+                 'unorderedmap' : "black"} 
+    return type_color.get(type, "pink")
+
+def get_linestyle(type):
+    type_linestyle = {'vector': "-",
+                 'deque': "--", 
+                 'list': "-.", 
+                 'forwardlist': ":", 
+                 'set' : "-", 
+                 'unorderedset' : "--",
+                 'map' : "-.",
+                 'unorderedmap' : ":"} 
+    return type_linestyle.get(type, "-")
 
 def analyze_results(file_list, x = None, withhighest = True):
     if len(file_list) == 0:
@@ -49,8 +66,9 @@ def analyze_results(file_list, x = None, withhighest = True):
             title = get_title(file_list[i])
         type = get_type(file_list[i])
         color = get_color(type)
+        linestyle = get_linestyle(type)
         list = get_list(file_list[i])
-        lists.append([type, color, list])
+        lists.append([type, color, linestyle, list])
         if listmax < max(list):
             listmax = max(list)
 
@@ -58,7 +76,8 @@ def analyze_results(file_list, x = None, withhighest = True):
     for i in range(0, len(lists)):
         type = lists[i][0]
         color = lists[i][1]
-        list = lists[i][2]
+        linestyle = lists[i][2]
+        list = lists[i][3]
         if False == withhighest and listmax == max(list):
             continue
         else:
@@ -66,7 +85,7 @@ def analyze_results(file_list, x = None, withhighest = True):
                 list = list[:x]
             if y_max < max(list[:]):
                 y_max = max(list)
-            plt.plot(list, color = color, label = type)
+            plt.plot(list, color = color, label = type, linestyle = linestyle)
     
     plt.title(title)
     plt.xlabel('OperationCounter')
