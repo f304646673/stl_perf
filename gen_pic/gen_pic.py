@@ -34,12 +34,12 @@ def get_title(file_name):
     return get_substr(file_name, "test_", "_")
 
 def get_color(type):
-    type_color = {'vector': "red ",
+    type_color = {'vector': "red",
                  'deque': "green", 
                  'list': "blue", 
                  'forwardlist': "cyan", 
                  'set' : "magenta", 
-                 'unorderedset' : "yellow",
+                 'unorderedset' : "orange",
                  'map' : "chocolate",
                  'unorderedmap' : "black"} 
     return type_color.get(type, "pink")
@@ -47,13 +47,13 @@ def get_color(type):
 def get_linestyle(type):
     type_linestyle = {'vector': "-",
                  'deque': "--", 
-                 'list': "-.", 
-                 'forwardlist': ":", 
+                 'list': "-", 
+                 'forwardlist': "--", 
                  'set' : "-", 
                  'unorderedset' : "--",
-                 'map' : "-.",
-                 'unorderedmap' : ":"} 
-    return type_linestyle.get(type, "-")
+                 'map' : "-",
+                 'unorderedmap' : "--"} 
+    return type_linestyle.get(type, "-.")
 
 def analyze_results(file_list, x = None, withhighest = True):
     if len(file_list) == 0:
