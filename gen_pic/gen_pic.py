@@ -34,7 +34,7 @@ def get_title(file_name):
     return get_substr(file_name, "test_", "_")
 
 def get_color(type):
-    type_color = {'vector': "r", 'deque': "g", 'list': "b", 'forward_list': "c", 'set' : "m"} # {'b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'};
+    type_color = {'vector': "r", 'deque': "g", 'list': "b", 'forwardlist': "c", 'set' : "m", 'unorderedset' : "y"} # {'b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'};
     return type_color.get(type, "k")
 
 def analyze_results(file_list, x = None, withhighest = True):

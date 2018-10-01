@@ -4,9 +4,22 @@
 #include <deque>
 #include <forward_list>
 #include <set>
+#include <unordered_set>
+
 #include <functional> 
 
 #include "perftool.h"
+
+void erase_unordered_set_end(size_t count, PerfTool& perftool) {
+    std::unordered_set<size_t> container;
+    for (size_t i = 0; i < count; i++) {
+        container.insert(i);
+    }
+    for (size_t i = 0; i < count; i++) {
+        container.erase(count - i - 1);
+        perftool.record();
+    }
+}
 
 void erase_set_end(size_t count, PerfTool& perftool) {
     std::set<size_t> container;
@@ -137,8 +150,8 @@ void test_erase_begin() {
     auto fn_begin_vector = std::bind(erase_begin<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_begin_vector)>(fn_begin_vector, count, "begin_vector");
 
-    auto fn_list_vector = std::bind(erase_begin<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
-    test_erase<decltype(fn_list_vector)>(fn_list_vector, count, "begin_list");
+    auto fn_mid_list = std::bind(erase_begin<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_erase<decltype(fn_mid_list)>(fn_mid_list, count, "begin_list");
 
     auto fn_begin_deque = std::bind(erase_begin<std::deque<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_begin_deque)>(fn_begin_deque, count, "begin_deque");
@@ -148,6 +161,9 @@ void test_erase_begin() {
 
     auto fn_begin_set = std::bind(erase_set_begin, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_begin_set)>(fn_begin_set, count, "begin_set");
+
+    auto fn_begin_unordered_set = std::bind(erase_begin<std::unordered_set<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_erase<decltype(fn_begin_unordered_set)>(fn_begin_unordered_set, count, "begin_unorderedset");
 }
 
 void test_erase_end() {
@@ -155,8 +171,8 @@ void test_erase_end() {
     auto fn_end_vector = std::bind(erase_end<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_end_vector)>(fn_end_vector, count, "end_vector");
     
-    auto fn_list_vector = std::bind(erase_end<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
-    test_erase<decltype(fn_list_vector)>(fn_list_vector, count, "end_list");
+    auto fn_mid_list = std::bind(erase_end<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_erase<decltype(fn_mid_list)>(fn_mid_list, count, "end_list");
 
     auto fn_end_deque = std::bind(erase_end<std::deque<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_end_deque)>(fn_end_deque, count, "end_deque");
@@ -166,6 +182,9 @@ void test_erase_end() {
 
     auto fn_end_set = std::bind(erase_set_end, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_end_set)>(fn_end_set, count, "end_set");
+
+    auto fn_end_unordered_set = std::bind(erase_unordered_set_end, std::placeholders::_1, std::placeholders::_2);
+    test_erase<decltype(fn_end_unordered_set)>(fn_end_unordered_set, count, "end_unorderedset");
 }
 
 void test_erase_mid() {
@@ -173,8 +192,8 @@ void test_erase_mid() {
     auto fn_mid_vector = std::bind(erase_mid<std::vector<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_mid_vector)>(fn_mid_vector, count, "mid_vector");
 
-    auto fn_list_vector = std::bind(erase_mid<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
-    test_erase<decltype(fn_list_vector)>(fn_list_vector, count, "mid_list");
+    auto fn_mid_list = std::bind(erase_mid<std::list<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_erase<decltype(fn_mid_list)>(fn_mid_list, count, "mid_list");
 
     auto fn_mid_deque = std::bind(erase_mid<std::deque<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_mid_deque)>(fn_mid_deque, count, "mid_deque");
@@ -184,4 +203,7 @@ void test_erase_mid() {
 
     auto fn_mid_set = std::bind(erase_set_mid, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_mid_set)>(fn_mid_set, count, "mid_set");
+
+    auto fn_mid_unordered_set = std::bind(erase_mid<std::unordered_set<size_t>>, std::placeholders::_1, std::placeholders::_2);
+    test_erase<decltype(fn_mid_unordered_set)>(fn_mid_unordered_set, count, "mid_unorderedset");
 }
