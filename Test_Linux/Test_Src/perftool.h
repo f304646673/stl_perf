@@ -32,13 +32,13 @@ public:
     void save(const char* path) {
         std::ofstream fd(path);
 #ifdef __linux__
-        long base = _records[0].tv_usec;
+        TimeStruct base = _records[0];
 #else
         LONGLONG base = _records[0].QuadPart;
 #endif
         for (size_t i = 0; i < _index; i++) {
 #ifdef __linux__
-            fd << _records[i].tv_usec - base << std::endl;
+            fd << (_records[i].tv_sec - base.tv_sec) * 1000 * 1000 + (_records[i].tv_usec - base.tv_usec) << std::endl;
 #else
             fd << _records[i].QuadPart - base << std::endl;
 #endif
