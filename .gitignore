@@ -330,3 +330,5 @@ ASALocalRun/
 .mfractor/
 /all
 /Test_Linux/readme
+/gen_pic/linux
+/gen_pic/windows

@@ -95,8 +95,22 @@ def analyze_results(file_list, x = None, withhighest = True):
         plt.xlim(0, x)
     
     plt.ylim(0, y_max)
-    plt.legend()
-    plt.show()
+    file_name = title
+    if None == x:
+        x = "full"
+    file_name += "_"
+    file_name += str(x)
+
+    if withhighest:
+       file_name += "_"
+       file_name += "highest"
+
+    file_name += ".png"
+    
+    plt.legend(loc = 'best', shadow = True)
+    #plt.show()
+    plt.savefig(file_name, transparent = False)
+    plt.close()
 
 class Analyze(object):
     def __init__(self, floder_path, prefix):
@@ -115,9 +129,9 @@ def show_result(floder_path, prefix):
     analyze.show(128 * 1)
     analyze.show(x = 128 * 1, withhighest = False)
 
-#analyze_floder = "..\\x64\\Release\\"
+analyze_floder = "..\\x64\\Release\\"
 
-analyze_floder = "..\\all\\"
+#analyze_floder = "..\\all\\"
 def show_insert_begin():
     show_result(analyze_floder, "test_insert_begin")
 
