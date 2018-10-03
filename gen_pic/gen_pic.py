@@ -115,7 +115,9 @@ def show_result(floder_path, prefix):
     analyze.show(128 * 1)
     analyze.show(x = 128 * 1, withhighest = False)
 
-analyze_floder = "..\\x64\\Release\\"
+#analyze_floder = "..\\x64\\Release\\"
+
+analyze_floder = "..\\all\\"
 def show_insert_begin():
     show_result(analyze_floder, "test_insert_begin")
 

@@ -1,5 +1,14 @@
-#pragma once
+#ifndef PERFTOOL_H
+#define PERFTOOL_H
+
+#ifdef __linux__
+#include <sys/time.h> 
+#define TimeStruct timeval
+#else
 #include <windows.h>
+#define TimeStruct LARGE_INTEGER
+#endif
+
 #include <fstream>
 
 class PerfTool {
@@ -8,23 +17,37 @@ public:
     ~PerfTool() {};
 public:
     void init(size_t count) {
-        _records = new LARGE_INTEGER[count];
+        _records = new TimeStruct[count];
     }
 
     void record() {
-        LARGE_INTEGER& PerformanceCount = _records[_index++];
+        TimeStruct& PerformanceCount = _records[_index++];
+#ifdef __linux__
+        gettimeofday(&PerformanceCount, NULL);
+#else
         QueryPerformanceCounter(&PerformanceCount);
+#endif
     }
 
     void save(const char* path) {
         std::ofstream fd(path);
+#ifdef __linux__
+        long base = _records[0].tv_usec;
+#else
         LONGLONG base = _records[0].QuadPart;
+#endif
         for (size_t i = 0; i < _index; i++) {
+#ifdef __linux__
+            fd << _records[i].tv_usec - base << std::endl;
+#else
             fd << _records[i].QuadPart - base << std::endl;
+#endif
         }
         fd.close();
     }
 private:
-    LARGE_INTEGER *_records;
+    TimeStruct *_records;
     size_t _index;
 };
+
+#endif

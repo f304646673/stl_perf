@@ -1,4 +1,6 @@
-#pragma once
+#ifndef TEST_ERASE_BEGIN_MID_END_H
+#define TEST_ERASE_BEGIN_MID_END_H
+
 #include <vector>
 #include <list>
 #include <deque>
@@ -265,3 +267,5 @@ void test_erase_mid() {
     auto fn_mid_unordered_set = std::bind(erase_mid<std::unordered_set<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_erase<decltype(fn_mid_unordered_set)>(fn_mid_unordered_set, count, "mid_unorderedset");
 }
+
+#endif

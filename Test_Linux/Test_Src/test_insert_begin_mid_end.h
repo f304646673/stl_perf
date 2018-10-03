@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEST_INSERT_BEGIN_MID_END_H
+#define TEST_INSERT_BEGIN_MID_END_H
 #include <vector>
 #include <list>
 #include <deque>
@@ -60,7 +61,6 @@ void insert_set_mid(size_t count, PerfTool& perftool) {
     std::set<size_t> container;
     container.insert(0);
     container.insert(count + count);
-    auto it = container.begin();
     for (size_t i = 1; i < count + 1; i++) {
         container.insert(i);
         perftool.record();
@@ -88,7 +88,6 @@ void insert_forward_list_begin(size_t count, PerfTool& perftool) {
 void insert_forward_list_mid(size_t count, PerfTool& perftool) {
     std::forward_list<size_t> container;
     container.push_front(0);
-    auto it = container.begin();
     for (size_t i = 1; i < count; i++) {
         container.insert_after(container.begin(), i);
         perftool.record();
@@ -116,10 +115,11 @@ void insert_begin(size_t count, PerfTool& perftool) {
 template<class T>
 void insert_mid(size_t count, PerfTool& perftool) {
     T container;
+    container.insert(container.end(), 0xFFFFFFFD);
+    container.insert(container.end(), 0xFFFFFFFE);
     container.insert(container.end(), 0xFFFFFFFF);
-    container.insert(container.end(), 0xFFFFFFFF);
-    auto it = container.end();
-    it--;
+    auto it = container.begin();
+    it++;
     for (size_t i = 0; i < count; i++) {
         it = container.insert(it, i);
         perftool.record();
@@ -222,3 +222,5 @@ void test_insert_mid() {
     auto fn_mid_unordered_set = std::bind(insert_mid<std::unordered_set<size_t>>, std::placeholders::_1, std::placeholders::_2);
     test_insert<decltype(fn_mid_unordered_set)>(fn_mid_deque, count, "mid_unorderedset");
 }
+
+#endif

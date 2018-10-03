@@ -1,4 +1,6 @@
-#pragma once
+#ifndef TEST_TRAVERSAL_BEGIN_END_H
+#define TEST_TRAVERSAL_BEGIN_END_H
+
 #include <vector>
 #include <list>
 #include <deque>
@@ -160,3 +162,5 @@ void test_traversal_end() {
     //auto fn_end_unordered_map = std::bind(traversal_map_end<std::unordered_map<size_t, size_t>>, std::placeholders::_1, std::placeholders::_2);
     //test_traversal<decltype(fn_end_unordered_map)>(fn_end_unordered_map, count, "end_unorderedmap");
 }
+
+#endif
