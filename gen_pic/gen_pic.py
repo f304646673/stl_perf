@@ -1,13 +1,16 @@
 import os
 import matplotlib.pyplot as plt
 
-def get_list(file_path):
+def get_data(file_path):
     list = []
     with open(file_path, 'r') as f:
         lines = f.readlines()
+        base = 0
         for i in range(0, len(lines)):
             str = lines[i].rstrip('\n')
-            list.append(int(str))
+            if i == 0:
+                base = int(str)
+            list.append(int(str) - base)
     return list
 
 def get_file_list(floder_path, prefix):
@@ -40,13 +43,13 @@ def get_color(type):
                  'forwardlist': "cyan", 
                  'set' : "magenta", 
                  'unorderedset' : "orange",
-                 'map' : "chocolate",
+                 'map' : "salmon",
                  'unorderedmap' : "black"} 
     return type_color.get(type, "pink")
 
 def get_linestyle(type):
     type_linestyle = {'vector': "-",
-                 'deque': "--", 
+                 'deque': "-", 
                  'list': "-", 
                  'forwardlist': "--", 
                  'set' : "-", 
@@ -55,46 +58,7 @@ def get_linestyle(type):
                  'unorderedmap' : "--"} 
     return type_linestyle.get(type, "-.")
 
-def analyze_results(file_list, x = None, withhighest = True):
-    if len(file_list) == 0:
-        return
-    title = ""
-    lists = []
-    listmax = 0
-    for i in range(0, len(file_list)):
-        if len(title) == 0:
-            title = get_title(file_list[i])
-        type = get_type(file_list[i])
-        color = get_color(type)
-        linestyle = get_linestyle(type)
-        list = get_list(file_list[i])
-        lists.append([type, color, linestyle, list])
-        if listmax < max(list):
-            listmax = max(list)
-
-    y_max = 0
-    for i in range(0, len(lists)):
-        type = lists[i][0]
-        color = lists[i][1]
-        linestyle = lists[i][2]
-        list = lists[i][3]
-        if False == withhighest and listmax == max(list):
-            continue
-        else:
-            if x != None:
-                list = list[:x]
-            if y_max < max(list[:]):
-                y_max = max(list)
-            plt.plot(list, color = color, label = type, linestyle = linestyle)
-    
-    plt.title(title)
-    plt.xlabel('OperationCounter')
-    plt.ylabel('PerformanceCounter')
-
-    if x != None:
-        plt.xlim(0, x)
-    
-    plt.ylim(0, y_max)
+def get_file_name(title, x, withhighest):
     file_name = title
     if None == x:
         x = "full"
@@ -106,7 +70,50 @@ def analyze_results(file_list, x = None, withhighest = True):
        file_name += "highest"
 
     file_name += ".png"
+    return file_name
+
+def draw_line(file_name, x_axis):
+    if None == file_name:
+        return
+    type = get_type(file_name)
+    color = get_color(type)
+    linestyle = get_linestyle(type)
+    data = get_data(file_name)
+    data = data[:x_axis]
+    plt.plot(data, color = color, label = type, linestyle = linestyle)
+
+def analyze_results(file_list, x_axis = None, withhighest = True):
+    if len(file_list) == 0:
+        return
+
+    title = ""
+    y_max = 0
+    max_file = None 
+    for i in range(0, len(file_list)):
+        file_name = file_list[i]
+        if len(title) == 0:
+            title = get_title(file_name)
+
+        data = get_data(file_name)
+        if None == x_axis:
+            x_axis = len(data)
+
+        max_v = max(data[:x_axis])
+        if y_max < max_v:
+            draw_line(max_file, x_axis)
+            y_max = max_v
+            max_file = file_name
+        else:
+            draw_line(file_name, x_axis)
+
+    if withhighest:
+        draw_line(max_file, x_axis)
     
+    plt.title(title)
+    plt.xlabel('Counts')
+    plt.ylabel('Nanosecond')
+
+    file_name = get_file_name(title, x_axis, withhighest)
     plt.legend(loc = 'best', shadow = True)
     #plt.show()
     plt.savefig(file_name, transparent = False)
@@ -122,16 +129,16 @@ def show_result(floder_path, prefix):
     analyze = Analyze(floder_path, prefix)
     analyze.show()
     analyze.show(withhighest = False)
-    analyze.show(128 * 16)
-    analyze.show(x = 128 * 16, withhighest = False)
-    analyze.show(128 * 4)
-    analyze.show(x = 128 * 4, withhighest = False)
-    analyze.show(128 * 1)
-    analyze.show(x = 128 * 1, withhighest = False)
+    analyze.show(128 * 32)
+    analyze.show(x = 128 * 32, withhighest = False)
+    analyze.show(128 * 8)
+    analyze.show(x = 128 * 8, withhighest = False)
+    analyze.show(128 * 2)
+    analyze.show(x = 128 * 2, withhighest = False)
 
-#analyze_floder = "..\\x64\\Release\\"
+analyze_floder = "..\\x64\\Release\\"
 
-analyze_floder = "..\\all\\"
+#analyze_floder = "..\\all\\"
 def show_insert_begin():
     show_result(analyze_floder, "test_insert_begin")
 

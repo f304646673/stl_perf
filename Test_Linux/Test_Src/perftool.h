@@ -3,51 +3,43 @@
 
 #ifdef __linux__
 #include <sys/time.h> 
-#define TimeStruct timeval
+#define timespec_ timespec
 #else
-#include <windows.h>
-#define TimeStruct LARGE_INTEGER
+#include <ctime>
+#define timespec_ _timespec64
 #endif
 
+#include <iomanip>
 #include <fstream>
 
 class PerfTool {
 public:
-    PerfTool() : _records(nullptr), _index(0) {};
+    PerfTool() : _records(nullptr), _size(0) {};
     ~PerfTool() {};
 public:
     void init(size_t count) {
-        _records = new TimeStruct[count];
+        _records = new timespec_[count];
     }
 
     void record() {
-        TimeStruct& PerformanceCount = _records[_index++];
+        timespec_& time_spec = _records[_size++];
 #ifdef __linux__
-        gettimeofday(&PerformanceCount, NULL);
+        clock_gettime(CLOCK_REALTIME, &time_spec);
 #else
-        QueryPerformanceCounter(&PerformanceCount);
+        _timespec64_get(&time_spec, TIME_UTC);
 #endif
     }
 
     void save(const char* path) {
         std::ofstream fd(path);
-#ifdef __linux__
-        TimeStruct base = _records[0];
-#else
-        LONGLONG base = _records[0].QuadPart;
-#endif
-        for (size_t i = 0; i < _index; i++) {
-#ifdef __linux__
-            fd << (_records[i].tv_sec - base.tv_sec) * 1000 * 1000 + (_records[i].tv_usec - base.tv_usec) << std::endl;
-#else
-            fd << _records[i].QuadPart - base << std::endl;
-#endif
+        for (size_t i = 0; i < _size; i++) {
+            fd << _records[i].tv_sec << std::setw(9) << std::setfill('0') <<_records[i].tv_nsec << std::endl;
         }
         fd.close();
     }
 private:
-    TimeStruct *_records;
-    size_t _index;
+    timespec_ *_records;
+    size_t _size;
 };
 
 #endif
