@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClInclude Include="Test_Src\perftool.h" />
     <ClInclude Include="Test_Src\test_erase_begin_mid_end.h" />
+    <ClInclude Include="Test_Src\test_find.h" />
     <ClInclude Include="Test_Src\test_insert_begin_mid_end.h" />
     <ClInclude Include="Test_Src\test_traversal_begin_end.h" />
   </ItemGroup>

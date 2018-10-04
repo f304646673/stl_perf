@@ -8,6 +8,8 @@ def get_data(file_path):
         base = 0
         for i in range(0, len(lines)):
             str = lines[i].rstrip('\n')
+            if len(str) == 0:
+                break
             if i == 0:
                 base = int(str)
             list.append(int(str) - base)
@@ -42,9 +44,13 @@ def get_color(type):
                  'list': "blue", 
                  'forwardlist': "cyan", 
                  'set' : "magenta", 
+                 'multiset' : "magenta",
                  'unorderedset' : "orange",
-                 'map' : "salmon",
-                 'unorderedmap' : "black"} 
+                 'unorderedmultiset' : "orange",
+                 'map' : "mediumvioletred",
+                 'multimap' : "mediumvioletred",
+                 'unorderedmap' : "black",
+                 'unorderedmultimap' : "black"} 
     return type_color.get(type, "pink")
 
 def get_linestyle(type):
@@ -53,9 +59,13 @@ def get_linestyle(type):
                  'list': "-", 
                  'forwardlist': "--", 
                  'set' : "-", 
-                 'unorderedset' : "--",
+                 'multiset' : "--",
+                 'unorderedset' : "-",
+                 'unorderedmultiset' : "--",
                  'map' : "-",
-                 'unorderedmap' : "--"} 
+                 'multimap' : "--",
+                 'unorderedmap' : "-",
+                 'unorderemultidmap' : "--"} 
     return type_linestyle.get(type, "-.")
 
 def get_file_name(title, x, withhighest):
@@ -114,9 +124,11 @@ def analyze_results(file_list, x_axis = None, withhighest = True):
     plt.ylabel('Nanosecond')
 
     file_name = get_file_name(title, x_axis, withhighest)
-    plt.legend(loc = 'best', shadow = True)
+    plt.legend(loc = 'best', fontsize = 'small', shadow = True)
     #plt.show()
-    plt.savefig(file_name, transparent = False)
+    plt.rcParams['savefig.dpi'] = 300
+    plt.rcParams['figure.dpi'] = 300
+    plt.savefig(file_name)
     plt.close()
 
 class Analyze(object):
@@ -139,6 +151,7 @@ def show_result(floder_path, prefix):
 analyze_floder = "..\\x64\\Release\\"
 
 #analyze_floder = "..\\all\\"
+
 def show_insert_begin():
     show_result(analyze_floder, "test_insert_begin")
 
@@ -166,6 +179,12 @@ def show_traversal_mid():
 def show_traversal_end():
     show_result(analyze_floder, "test_traversal_end")
 
+def show_find():
+    show_result(analyze_floder, "test_find")
+
+    
+show_find()
+
 show_insert_begin()
 show_insert_mid()
 show_insert_end()
@@ -177,4 +196,5 @@ show_erase_end()
 show_traversal_begin()
 show_traversal_mid()
 show_traversal_end()
+
 
