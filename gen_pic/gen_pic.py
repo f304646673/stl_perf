@@ -148,8 +148,10 @@ def show_result(floder_path, prefix):
     analyze.show(128 * 2)
     analyze.show(x = 128 * 2, withhighest = False)
 
+#windows
 #analyze_floder = "..\\x64\\Release\\"
 
+#ubuntu
 analyze_floder = "..\\all\\"
 
 def show_insert_begin():
