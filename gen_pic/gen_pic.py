@@ -97,8 +97,7 @@ def analyze_results(file_list, x_axis = None, withhighest = True):
         return
 
     title = ""
-    y_max = 0
-    max_file = None 
+    data_list = []
     for i in range(0, len(file_list)):
         file_name = file_list[i]
         if len(title) == 0:
@@ -109,15 +108,16 @@ def analyze_results(file_list, x_axis = None, withhighest = True):
             x_axis = len(data)
 
         max_v = max(data[:x_axis])
-        if y_max < max_v:
-            draw_line(max_file, x_axis)
-            y_max = max_v
-            max_file = file_name
-        else:
-            draw_line(file_name, x_axis)
+        data_list.append((max_v, file_name))
 
-    if withhighest:
-        draw_line(max_file, x_axis)
+    data_list.sort()
+    draw_list_len = len(data_list)
+
+    if False == withhighest:
+        draw_list_len = draw_list_len - 1
+
+    for i in range(0, draw_list_len):
+        draw_line(data_list[i][1], x_axis)
     
     plt.title(title)
     plt.xlabel('Counts')
@@ -148,9 +148,9 @@ def show_result(floder_path, prefix):
     analyze.show(128 * 2)
     analyze.show(x = 128 * 2, withhighest = False)
 
-analyze_floder = "..\\x64\\Release\\"
+#analyze_floder = "..\\x64\\Release\\"
 
-#analyze_floder = "..\\all\\"
+analyze_floder = "..\\all\\"
 
 def show_insert_begin():
     show_result(analyze_floder, "test_insert_begin")
